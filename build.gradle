@@ -32,6 +32,7 @@ dependencies {
     // Common dependencies for all modules
     implementation "org.springframework.boot:spring-boot-starter:$springBootVersion"
     implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
     implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
     implementation "org.springframework.boot:spring-boot-starter-quartz:$springBootVersion"
     implementation "org.springframework.boot:spring-boot-actuator:$springBootVersion"
@@ -122,8 +123,7 @@ subprojects {
         implementation "org.springframework.boot:spring-boot-starter-artemis:$springBootVersion"
         implementation "org.springframework.boot:spring-boot-starter-thymeleaf:$springBootVersion"
         implementation "org.springframework.boot:spring-boot-starter-data-rest:$springBootVersion"
-        //implementation "org.springframework.boot:spring-boot-starter-data-rest:$springBootVersion"
-        //implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+        implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
 
         // Jackson
         implementation 'com.fasterxml.jackson.core:jackson-annotations:2.18.2'

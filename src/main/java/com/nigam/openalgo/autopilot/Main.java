@@ -6,13 +6,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
-
 import org.springframework.jms.annotation.EnableJms;
 
 //http://localhost:8092
 //http://localhost:8092/swagger-ui/index.html
-//https://github.com/RuchiTanmay/nselib
-@SpringBootApplication
+@SpringBootApplication(exclude = {org.springdoc.core.configuration.SpringDocDataRestConfiguration.class})
 @EnableCaching
 @EnableJms
 public class Main {
