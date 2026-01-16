@@ -1,0 +1,13 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: openalgo-socket-listener
+
+# OpenAlgo Socket Configuration
+openalgo:
+  socket:
+    host: localhost
+    port: 8083
+    reconnect-interval: 5000

@@ -1,0 +1,5 @@
+rootProject.name = 'openalgo-autopilot'
+
+include 'ui-module'
+include 'socket-listener-module'
+include 'api-module'
