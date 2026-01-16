@@ -1,0 +1,263 @@
+<footer th:fragment="appFooter">
+    <div style="border-top:1px solid #ccc; margin-top:30px; padding:15px; text-align:center;">
+        <h4>Quick Links</h4>
+        <nav id="quick-links" style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap;"></nav>
+        <h4>Actions</h4>
+        <div id="api-buttons"></div>
+        <pre id="api-result"></pre>
+    </div>
+    <hr style="margin:8px 0;">
+
+    <div class="footer-container">
+
+            <!-- ========== COLUMN 1 ========== -->
+            <div class="footer-column">
+                <h4>LTP Calculator</h4>
+                <a href="https://ltpcalc.com/" target="_blank">LTP Calculator</a>
+                <a href="https://zerodha.ltpcalc.com/" target="_blank">ZeroDha OpenAlgo</a>
+                <a href="https://shoonya.ltpcalc.com/" target="_blank">Shoonya OpenAlgo</a>
+                <a href="https://angelone.ltpcalc.com/" target="_blank">Angelone OpenAlgo</a>
+                <a href="https://upstox.ltpcalc.com/" target="_blank">UpStox OpenAlgo</a>
+                <a href="https://ltp.ltpcalc.com/" target="_blank">Drupal LTP</a>
+                <a href="https://docautomation.ltpcalc.com/" target="_blank">Drupal DocAutomation</a>
+            </div>
+
+            <!-- ========== COLUMN 2 ========== -->
+            <div class="footer-column">
+                <h4>C1 - Internal</h4>
+                <a href="http://192.168.1.100:5000" target="_blank">Zerodha - Lan</a>
+                <a href="http://192.168.1.100:5001" target="_blank">Shoonya - Lan</a>
+                <a href="http://192.168.1.100:5002" target="_blank">AngelOne - Lan</a>
+                <a href="http://192.168.1.100:5003" target="_blank">Upstox - Lan</a>
+                <a href="http://192.168.0.100:5000" target="_blank">Zerodha - WiFi</a>
+                <a href="http://192.168.0.100:5001" target="_blank">Shoonya - WiFi</a>
+                <a href="http://192.168.0.100:5002" target="_blank">AngelOne - WiFi</a>
+                <a href="http://192.168.0.100:5003" target="_blank">Upstox - WiFi</a>
+
+                <a href="http://192.168.1.100:8089" target="_blank">Kafka UI - Lan</a>
+                <a href="http://192.168.0.100:8089" target="_blank">Kafka UI - WiFi</a>
+            </div>
+
+            <!-- ========== COLUMN 3 ========== -->
+            <div class="footer-column">
+                <h4>C2 - Internal</h4>
+                <a href="http://192.168.1.101:5011/d/Volume/volume-breakout" target="_blank">Grafana - Volume</a>
+            </div>
+
+            <!-- ========== COLUMN 4 ========== -->
+            <div class="footer-column">
+                <h4>C3 - Internal</h4>
+                <a href="http://192.168.1.102:5011/d/Volume/volume-breakout" target="_blank">Grafana - Volume</a>
+            </div>
+        </div>
+
+    <script>
+        (function () {
+          const quickLinks = [
+            { label: 'hr', path: '/', port: 8092 },
+            { label: 'Volume', path: '/d/Volume/volume-breakout', port: 5011 },
+            { label: 'Holdings', path: '/d/BullBear/bullbear', port: 5011 },
+            { label: 'Schematic', path: '/d/Schematic/schematic', port: 5011 },
+            { label: 'Index Filter', path: '/d/IndexFilter/index-filter', port: 5011 },
+            { label: 'Crawller', path: '/d/Crawller/crawller', port: 5011 },
+            { label: 'Stoploss', path: '/d/Stoploss/stoploss', port: 5011 },
+            { label: 'hr', path: '/', port: 8092 },
+            { label: 'Grafana:admin/admin', path: '/', port: 5011 },
+            { label: 'PGAdmin:admin@admin.com/admin', path: '/', port: 5050 },
+            { label: 'Zerodha', path: '/', port: 5000 },
+            { label: 'Shoonya', path: '/', port: 5001 },
+            { label: 'Angelone', path: '/', port: 5002 },
+            { label: 'UpStox', path: '/', port: 5003 },
+            { label: 'Swagger UI', path: '/swagger-ui/index.html', port: 8091 },
+            { label: 'Temporal UI', path: '/', port: 8092 },
+            { label: 'Kibana-Elastic', path: '/', port: 5601 },
+            { label: 'Redis Insight', path: '/', port: 5540 },
+            { label: 'NATS', path: '/', port: 8222 },
+            { label: 'Active MQ-artemis', path: '/console/artemis', port: 8161 },
+            { label: 'Airbyte', path: '/', port: 59582 },
+            { label: 'hr', path: '/', port: 8092 },
+            { label: 'Kafka Dashboard:admin@admin.com/66', path: '/', port: 8080 },
+            { label: 'Kafka UI', path: '/', port: 8089 },
+            { label: 'Kafka Connect 1', path: '/connectors', port: 8083 },
+            { label: 'Kafka Connect 2', path: '/connectors', port: 8084 },
+            { label: 'Kafka Connect 3', path: '/connectors', port: 8085 },
+            { label: 'Kafka Connect 4', path: '/connectors', port: 8086 },
+            { label: 'Kafka Connect 5', path: '/connectors', port: 8087 },
+            { label: 'Rest Proxy 1', path: '/topics', port: 8020 },
+            { label: 'Rest Proxy 2', path: '/topics', port: 8021 },
+            { label: 'Rest Proxy 3', path: '/topics', port: 8022 },
+            { label: 'Rest Proxy 4', path: '/topics', port: 8023 },
+            { label: 'Rest Proxy 5', path: '/topics', port: 8024 },
+            { label: 'Rest Proxy 6', path: '/topics', port: 8025 },
+            { label: 'Rest Proxy 7', path: '/topics', port: 8026 },
+            { label: 'Rest Proxy 8', path: '/topics', port: 8027 },
+            { label: 'Rest Proxy 9', path: '/topics', port: 8028 },
+            { label: 'Rest Proxy 10', path: '/topics', port: 8029 },
+            { label: 'Rest Proxy 11', path: '/topics', port: 8030 },
+            { label: 'Rest Proxy 12', path: '/topics', port: 8031 },
+            { label: 'Rest Proxy 13', path: '/topics', port: 8032 },
+            { label: 'Rest Proxy 14', path: '/topics', port: 8033 },
+            { label: 'Rest Proxy 15', path: '/topics', port: 8034 },
+            { label: 'Rest Proxy 16', path: '/topics', port: 8035 },
+            { label: 'Rest Proxy 17', path: '/topics', port: 8036 },
+            { label: 'Rest Proxy 18', path: '/topics', port: 8037 },
+            { label: 'Rest Proxy 19', path: '/topics', port: 8038 },
+            { label: 'Rest Proxy 20', path: '/topics', port: 8039 },
+            { label: 'Nginx Rest Proxy', path: '/topics', port: 8082 },
+            { label: 'hr', path: '/', port: 8092 },
+            { label: 'Portainer:admin/6666', path: '/', port: 9000 },
+            { label: 'hr', path: '/', port: 8092 },
+            { label: 'Drupal:admin/dev12345', path: '/', port: 5555 },
+            { label: 'Nginx:admin@admin.com/66', path: '/', port: 81 },
+            { label: 'hr', path: '/', port: 8092 }
+          ];
+
+          const host = window.location.hostname;
+          const container = document.getElementById('quick-links');
+
+          quickLinks.forEach(link => {
+            if (link.label === 'hr') {
+              const hr = document.createElement('hr');
+              hr.style.width = '100%';
+              hr.style.margin = '15px 0';
+              container.appendChild(hr);
+              return;
+            }
+
+            const a = document.createElement('a');
+            a.href = `http://${host}:${link.port}${link.path}`;
+            a.target = '_blank';
+            a.textContent = link.label;
+            a.style.textDecoration = 'none';
+            a.style.color = '#007bff';
+            a.style.transition = 'color 0.2s';
+            a.onmouseover = () => (a.style.color = '#0056b3');
+            a.onmouseout = () => (a.style.color = '#007bff');
+            container.appendChild(a);
+          });
+          /* =====================================================
+                 2️⃣ NEW API BUTTON GENERATOR (GET / POST / DELETE / TEXT)
+            ======================================================*/
+            const apiContainer = document.getElementById("api-buttons");
+            const apiResult = document.getElementById("api-result");
+
+            const apiItems = [
+              { type: "hr" },
+              { type: "text", value: "Get APIs" },
+              { type: "hr" },
+
+              /*{
+                type: "GET",
+                name: "Fetch Users",
+                relativeApi: "/api/users"
+              },*/
+
+              { type: "hr" },
+              { type: "text", value: "Post APIs" },
+              { type: "hr" },
+
+              {
+                type: "POST",
+                name: "5 Min Crawller",
+                relativeApi: "/db-crawler/v1/Minute5Crawler",
+                stringDataList: ["null"]
+              },
+
+              {
+                type: "POST",
+                name: "1 Hr Crawller",
+                relativeApi: "/db-crawler/v1/DailyCrawler",
+                stringDataList: ["null"]
+              },
+
+              {
+                type: "POST",
+                name: "200Day Crawller",
+                relativeApi: "/db-crawler/v1/Daily200DayCrawler",
+                stringDataList: ["null"]
+              },
+
+              { type: "hr" },
+              { type: "text", value: "Delete APIs" },
+              { type: "hr" },
+
+             /* {
+                type: "DELETE",
+                name: "Delete User",
+                relativeApi: "/api/users/delete",
+                stringDataList: ["userId"]
+              }, */
+
+              { type: "hr" }
+            ];
+
+            apiItems.forEach(api => {
+
+              // 🔹 SECTION TITLE (text)
+              if (api.type === "text") {
+                const div = document.createElement("div");
+                div.textContent = api.value;
+                div.style.margin = "10px 0 4px 0";
+                div.style.fontWeight = "bold";
+                div.style.fontSize = "14px";
+                apiContainer.appendChild(div);
+                return;
+              }
+
+              // 🔹 HORIZONTAL LINE (hr)
+              if (api.type === "hr") {
+                const hr = document.createElement("hr");
+                hr.style.margin = "15px 0";
+                apiContainer.appendChild(hr);
+                return;
+              }
+
+              // 🔹 BUTTONS
+              const btn = document.createElement("button");
+              btn.textContent = `${api.name}`;
+              btn.style.margin = "8px";
+              btn.style.padding = "8px 14px";
+              btn.style.cursor = "pointer";
+              btn.style.borderRadius = "6px";
+
+              if (api.type === "GET") btn.style.background = "#0d6efd", btn.style.color = "white";
+              if (api.type === "POST") btn.style.background = "#198754", btn.style.color = "white";
+              if (api.type === "DELETE") btn.style.background = "#dc3545", btn.style.color = "white";
+
+              let lastClickedButton = null;
+
+                btn.onclick = () => {
+                    // 🔹 Disable previously clicked button
+                    if (lastClickedButton) {
+                        lastClickedButton.disabled = false;
+                    }
+
+                    // 🔹 Disable current button
+                    btn.disabled = true;
+                    lastClickedButton = btn;
+
+                    let payload = null;
+
+                    if ((api.type === "POST" || api.type === "DELETE") && api.stringDataList?.length) {
+                        payload = {};
+                        api.stringDataList.forEach(key => {
+                            payload[key] = "null"; // Default fire-and-forget payload
+                        });
+                    }
+
+                    // 🚀 FIRE AND FORGET (NO await)
+                    fetch(`http://${window.location.hostname}:${window.location.port}${api.relativeApi}`, {
+                        method: api.type,
+                        headers: { "Content-Type": "application/json" },
+                        body: payload ? JSON.stringify(payload) : null
+                    });
+
+                    // Optional UI feedback
+                    apiResult.textContent = `Triggered: ${api.name}`;
+                };
+
+              apiContainer.appendChild(btn);
+            });
+        })();
+    </script>
+</footer>

@@ -1,0 +1,261 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+}
+
+.card {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: none;
+  border-radius: 8px;
+}
+
+.card-body {
+  padding: 2rem;
+}
+
+.btn {
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+h1 {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.lead {
+  color: #6c757d;
+  font-size: 1.1rem;
+}
+
+.card-title {
+  color: #495057;
+  font-weight: 500;
+}
+
+/* ===== Footer ===== */
+.footer-container {
+  border-top: 1px solid #ccc;
+  margin-top: 30px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-column h4 {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 6px;
+}
+
+.footer-column a {
+  margin: 4px 0;
+  text-decoration: none;
+  font-size: 14px;
+  color: #0d6efd;
+}
+
+.footer-column a:hover {
+  color: #084298;
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+  .footer-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==================================================
+   Tables
+   ================================================== */
+
+tr.default-row {
+  background-color: #e6ffe6 !important;
+}
+
+/* ==================================================
+   Header Bar
+   ================================================== */
+
+.header-bar {
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.header-bar h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+/* ==================================================
+   Action Buttons
+   ================================================== */
+
+.sell-btn {
+  background-color: #0078d7;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.sell-btn:hover {
+  background-color: #005fa3;
+}
+
+/* ==================================================
+   Containers
+   ================================================== */
+
+.sell-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* ==================================================
+   Inputs
+   ================================================== */
+
+.strategy-input {
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  width: 200px;
+}
+/* ===== Footer ===== */
+.footer-container {
+  border-top: 1px solid #ccc;
+  margin-top: 30px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-column h4 {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 6px;
+}
+
+.footer-column a {
+  margin: 4px 0;
+  text-decoration: none;
+  font-size: 14px;
+  color: #0d6efd;
+}
+
+.footer-column a:hover {
+  color: #084298;
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+  .footer-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==================================================
+   Tables
+   ================================================== */
+
+tr.default-row {
+  background-color: #e6ffe6 !important;
+}
+
+/* ==================================================
+   Header Bar
+   ================================================== */
+
+.header-bar {
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.header-bar h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+/* ==================================================
+   Action Buttons
+   ================================================== */
+
+.sell-btn {
+  background-color: #0078d7;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.sell-btn:hover {
+  background-color: #005fa3;
+}
+
+/* ==================================================
+   Containers
+   ================================================== */
+
+.sell-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* ==================================================
+   Inputs
+   ================================================== */
+
+.strategy-input {
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  width: 200px;
+}
+

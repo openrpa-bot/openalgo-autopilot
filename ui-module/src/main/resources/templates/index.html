@@ -1,17 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: samples-header}">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${title}">OpenAlgo Autopilot</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>OpenAlgo Autopilot</title>
+    <!-- App CSS -->
+    <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="/">OpenAlgo Autopilot</a>
-        </div>
-    </nav>
+<body class="bg-light">
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-12">
@@ -20,12 +15,18 @@
                 <div class="card mt-4">
                     <div class="card-body">
                         <h5 class="card-title">System Status</h5>
-                        <p class="card-text">UI Module is running on port 8080</p>
+                        <p class="card-text">Application is running on port <span th:text="${@environment.getProperty('server.port')}">8090</span></p>
+                        <a th:href="@{/swagger-ui/index.html}" class="btn btn-primary">Swagger UI</a>
+                        <a th:href="@{/api-docs}" class="btn btn-secondary">API Docs</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
+    <div th:replace="~{fragments/footer :: appFooter}"></div>
+    
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
