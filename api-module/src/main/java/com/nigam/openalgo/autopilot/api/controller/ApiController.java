@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/autopilot/v1")
 @Tag(name = "OpenAlgo Autopilot API", description = "REST API endpoints for OpenAlgo Autopilot")
 public class ApiController {
     

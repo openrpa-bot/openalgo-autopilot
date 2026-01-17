@@ -1,0 +1,8 @@
+plugins {
+    id 'org.springframework.boot'
+}
+
+dependencies {
+    // Database related dependencies are inherited from root build.gradle
+    // This module will contain entities, repositories, and database-related services
+}
