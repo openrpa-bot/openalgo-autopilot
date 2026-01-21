@@ -20,8 +20,14 @@ RUN gradle clean build -x test --no-daemon
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
-# Create non-root user
-RUN addgroup -S spring && adduser -S spring -G spring
+# Create non-root user (must be done as root)
+RUN addgroup -S spring && \
+    adduser -S spring -G spring
+
+# Set timezone environment variable (Java will use this)
+ENV TZ=Asia/Kolkata
+
+# Switch to non-root user
 USER spring:spring
 
 # Copy the built JAR from build stage
@@ -29,10 +35,6 @@ COPY --from=build /app/build/libs/*.jar app.jar
 
 # Expose port (adjust if your app uses a different port)
 EXPOSE 8092
-
-# Set timezone
-ENV TZ=Asia/Kolkata
-RUN apk add --no-cache tzdata
 
 # Run the application
 ENTRYPOINT ["java", "-Duser.timezone=Asia/Kolkata", "-jar", "app.jar"]
