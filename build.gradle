@@ -8,6 +8,10 @@ bootRun {
     jvmArgs([
             "-Duser.timezone=Asia/Kolkata"
     ])
+    // Allow passing Spring profiles via command line: ./gradlew bootRun --args='--spring.profiles.active=dev'
+    if (project.hasProperty('args')) {
+        args project.args.split(',')
+    }
 }
 
 allprojects {
