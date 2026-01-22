@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <!-- This changeset ensures configuration_override table exists -->
+    <!-- It creates the table if it doesn't exist, using CREATE TABLE IF NOT EXISTS -->
+    <changeSet id="ensure-configuration-table-exists" author="system">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="autopilot_configuration_override"/>
+            </not>
+        </preConditions>
+        
+        <sql>
+            -- Create autopilot_configuration_override table if it doesn't exist
+            CREATE TABLE IF NOT EXISTS autopilot_configuration_override (
+                id BIGSERIAL PRIMARY KEY,
+                config_key VARCHAR(255) NOT NULL UNIQUE,
+                config_value TEXT,
+                description TEXT,
+                category VARCHAR(100),
+                is_active BOOLEAN NOT NULL DEFAULT true,
+                created_at TIMESTAMP NOT NULL,
+                updated_at TIMESTAMP,
+                updated_by VARCHAR(100)
+            );
+            
+            -- Create indexes if they don't exist
+            CREATE INDEX IF NOT EXISTS idx_config_key ON autopilot_configuration_override(config_key);
+            CREATE INDEX IF NOT EXISTS idx_config_category ON autopilot_configuration_override(category);
+            CREATE INDEX IF NOT EXISTS idx_config_active ON autopilot_configuration_override(is_active);
+        </sql>
+        
+        <rollback>
+            <!-- Rollback not needed - this is an essential table -->
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

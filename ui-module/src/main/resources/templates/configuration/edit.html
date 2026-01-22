@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${config.key != null} ? 'Edit Configuration' : 'Add Configuration'">Configuration - OpenAlgo Autopilot</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <style>
+        .form-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .form-group small {
+            display: block;
+            margin-top: 0.25rem;
+            color: #666;
+            font-size: 0.875rem;
+        }
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1rem;
+        }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn:hover { opacity: 0.9; }
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #007bff;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
+        }
+        .current-value {
+            background: #f5f5f5;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragments/header :: samples-header}"></div>
+
+    <div class="container" style="max-width: 1200px; margin: 2rem auto; padding: 0 1rem;">
+        <h1 th:text="${config.key != null} ? 'Edit Configuration' : 'Add New Configuration'">Configuration</h1>
+
+        <div class="form-container">
+            <div class="info-box" th:if="${config.currentValue != null}">
+                <strong>Current Effective Value:</strong>
+                <div class="current-value" th:text="${config.currentValue}">current value</div>
+                <small>This is the value currently being used by the application (from all sources).</small>
+            </div>
+
+            <form th:action="@{/configuration/save}" method="post" th:object="${config}">
+                <div class="form-group">
+                    <label for="key">Configuration Key *</label>
+                    <input type="text" 
+                           id="key" 
+                           th:field="*{key}" 
+                           th:readonly="${config.key != null}"
+                           required
+                           placeholder="e.g., database.host, kafka.bootstrap-servers">
+                    <small>The configuration key (e.g., "database.host", "kafka.bootstrap-servers")</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="value">Configuration Value *</label>
+                    <textarea id="value" 
+                              th:field="*{value}" 
+                              required
+                              placeholder="Enter the configuration value"></textarea>
+                    <small>The value for this configuration. This will override all other sources.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" th:field="*{category}">
+                        <option value="">-- Select Category --</option>
+                        <option th:each="cat : ${categories}" 
+                                th:value="${cat}" 
+                                th:text="${cat}">Category</option>
+                    </select>
+                    <small>Optional: Group configurations by category</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" 
+                              th:field="*{description}" 
+                              placeholder="Optional description of what this configuration does"></textarea>
+                    <small>Optional: Describe what this configuration does</small>
+                </div>
+
+                <input type="hidden" th:field="*{id}">
+                <input type="hidden" name="updatedBy" value="admin">
+
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary">Save Configuration</button>
+                    <a th:href="@{/configuration}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: appFooter}"></div>
+</body>
+</html>

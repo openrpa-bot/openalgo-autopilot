@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="create-configuration-override-table" author="system">
+        <validCheckSum>9:a9b6c19b9238389f52db3df936603a5f</validCheckSum>
+        <validCheckSum>9:d9de4cea570f482f620df15d510bed26</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="autopilot_configuration_override"/>
+            </not>
+        </preConditions>
+        <createTable tableName="autopilot_configuration_override">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="config_key" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="config_value" type="TEXT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="description" type="TEXT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="category" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_active" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+            <column name="updated_by" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        
+        <createIndex indexName="idx_config_key" tableName="autopilot_configuration_override">
+            <column name="config_key"/>
+        </createIndex>
+        
+        <createIndex indexName="idx_config_category" tableName="autopilot_configuration_override">
+            <column name="category"/>
+        </createIndex>
+        
+        <createIndex indexName="idx_config_active" tableName="autopilot_configuration_override">
+            <column name="is_active"/>
+        </createIndex>
+        
+        <rollback>
+            <dropTable tableName="autopilot_configuration_override"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

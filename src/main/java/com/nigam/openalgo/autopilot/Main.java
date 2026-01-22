@@ -19,7 +19,8 @@ import org.springframework.jms.annotation.EnableJms;
     "com.nigam.openalgo.autopilot.api",
     "com.nigam.openalgo.autopilot.ui",
     "com.nigam.openalgo.autopilot.socket",
-    "com.nigam.openalgo.autopilot.dblayer"
+    "com.nigam.openalgo.autopilot.dblayer",
+    "com.nigam.openalgo.autopilot.configuration"
 })
 public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class);

@@ -8,7 +8,7 @@ public class PrefixedPhysicalNamingStrategy extends PhysicalNamingStrategyStanda
     
     // Read from system property or use default
     private static final String TABLE_PREFIX = System.getProperty("app.table.prefix", 
-            System.getenv().getOrDefault("APP_TABLE_PREFIX", "OA_"));
+            System.getenv().getOrDefault("APP_TABLE_PREFIX", "autopilot_"));
     
     @Override
     public Identifier toPhysicalTableName(Identifier name, JdbcEnvironment context) {

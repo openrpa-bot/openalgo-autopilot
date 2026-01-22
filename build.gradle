@@ -34,6 +34,7 @@ dependencies {
     implementation project(':socket-listener-module')
     implementation project(':api-module')
     implementation project(':db-layer')
+    implementation project(':configuration-module')
     // Common dependencies for all modules
     implementation "org.springframework.boot:spring-boot-starter:$springBootVersion"
     implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
@@ -45,7 +46,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-cache:$springBootVersion"
     implementation "org.springframework.boot:spring-boot-starter-data-redis:$springBootVersion"
     implementation "org.springframework.boot:spring-boot-starter-artemis:$springBootVersion"
-    implementation "org.springframework.kafka:spring-kafka:3.1.5"
+    implementation "org.springframework.kafka:spring-kafka"
 
     // Jackson
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.18.2'
@@ -131,7 +132,7 @@ subprojects {
         implementation "org.springframework.boot:spring-boot-starter-cache:$springBootVersion"
         implementation "org.springframework.boot:spring-boot-starter-data-redis:$springBootVersion"
         implementation "org.springframework.boot:spring-boot-starter-artemis:$springBootVersion"
-        implementation "org.springframework.kafka:spring-kafka:3.1.5"
+        implementation "org.springframework.kafka:spring-kafka"
         implementation "org.springframework.boot:spring-boot-starter-thymeleaf:$springBootVersion"
         implementation "org.springframework.boot:spring-boot-starter-data-rest:$springBootVersion"
         implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'

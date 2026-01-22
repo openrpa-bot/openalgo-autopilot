@@ -8,7 +8,7 @@ import jakarta.annotation.PostConstruct;
 @Configuration
 public class TablePrefixConfiguration {
     
-    @Value("${app.table.prefix:OA_}")
+    @Value("${app.table.prefix:autopilot_}")
     private String tablePrefix;
     
     @PostConstruct

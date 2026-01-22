@@ -5,6 +5,6 @@ dependencies {
     implementation 'in.openalgo:openalgo:1.0.1'
     
     // Kafka
-    implementation "org.springframework.kafka:spring-kafka:3.1.5"
+    implementation "org.springframework.kafka:spring-kafka"
 }
 

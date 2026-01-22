@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <!-- This changeset ensures all Quartz tables exist with autopilot_ prefix -->
+    <!-- It creates the tables if they don't exist, regardless of previous changeset status -->
+    <!-- Using CREATE TABLE IF NOT EXISTS so it's safe to run multiple times -->
+    <changeSet id="ensure-quartz-tables-exist-v2" author="system">
+        <!-- Run if scheduler_state table doesn't exist (most critical missing table) -->
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="autopilot_qrtz_scheduler_state"/>
+            </not>
+        </preConditions>
+        
+        <sql>
+            -- Create autopilot_qrtz_locks
+            CREATE TABLE IF NOT EXISTS autopilot_qrtz_locks (
+                SCHED_NAME VARCHAR(120) NOT NULL,
+                LOCK_NAME VARCHAR(40) NOT NULL,
+                PRIMARY KEY (SCHED_NAME, LOCK_NAME)
+            );
+            
+            -- Create autopilot_qrtz_job_details
+            CREATE TABLE IF NOT EXISTS autopilot_qrtz_job_details (
+                SCHED_NAME VARCHAR(120) NOT NULL,
+                JOB_NAME VARCHAR(200) NOT NULL,
+                JOB_GROUP VARCHAR(200) NOT NULL,
+                DESCRIPTION VARCHAR(250),
+                JOB_CLASS_NAME VARCHAR(250) NOT NULL,
+                IS_DURABLE VARCHAR(1) NOT NULL,
+                IS_NONCONCURRENT VARCHAR(1) NOT NULL,
+                IS_UPDATE_DATA VARCHAR(1) NOT NULL,
+                REQUESTS_RECOVERY VARCHAR(1) NOT NULL,
+                JOB_DATA BYTEA,
+                PRIMARY KEY (SCHED_NAME, JOB_NAME, JOB_GROUP)
+            );
+            
+            CREATE INDEX IF NOT EXISTS idx_autopilot_qrtz_j_grp ON autopilot_qrtz_job_details(SCHED_NAME, JOB_GROUP);
+            CREATE INDEX IF NOT EXISTS idx_autopilot_qrtz_j_req_recovery ON autopilot_qrtz_job_details(SCHED_NAME, REQUESTS_RECOVERY);
+            
+            -- Create autopilot_qrtz_triggers
+            CREATE TABLE IF NOT EXISTS autopilot_qrtz_triggers (
+                SCHED_NAME VARCHAR(120) NOT NULL,
+                TRIGGER_NAME VARCHAR(200) NOT NULL,
+                TRIGGER_GROUP VARCHAR(200) NOT NULL,
+                JOB_NAME VARCHAR(200) NOT NULL,
+                JOB_GROUP VARCHAR(200) NOT NULL,
+                DESCRIPTION VARCHAR(250),
+                NEXT_FIRE_TIME BIGINT,
+                PREV_FIRE_TIME BIGINT,
+                PRIORITY INTEGER,
+                TRIGGER_STATE VARCHAR(16) NOT NULL,
+                TRIGGER_TYPE VARCHAR(8) NOT NULL,
+                START_TIME BIGINT NOT NULL,
+                END_TIME BIGINT,
+                CALENDAR_NAME VARCHAR(200),
+                MISFIRE_INSTR SMALLINT,
+                JOB_DATA BYTEA,
+                PRIMARY KEY (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP),
+                FOREIGN KEY (SCHED_NAME, JOB_NAME, JOB_GROUP) 
+                    REFERENCES autopilot_qrtz_job_details(SCHED_NAME, JOB_NAME, JOB_GROUP)
+            );
+            
+            CREATE INDEX IF NOT EXISTS idx_autopilot_qrtz_t_next_fire_time ON autopilot_qrtz_triggers(SCHED_NAME, NEXT_FIRE_TIME);
+            CREATE INDEX IF NOT EXISTS idx_autopilot_qrtz_t_state ON autopilot_qrtz_triggers(SCHED_NAME, TRIGGER_STATE);
+            
+            -- Create autopilot_qrtz_scheduler_state (required for clustering)
+            CREATE TABLE IF NOT EXISTS autopilot_qrtz_scheduler_state (
+                SCHED_NAME VARCHAR(120) NOT NULL,
+                INSTANCE_NAME VARCHAR(200) NOT NULL,
+                LAST_CHECKIN_TIME BIGINT NOT NULL,
+                CHECKIN_INTERVAL BIGINT NOT NULL,
+                PRIMARY KEY (SCHED_NAME, INSTANCE_NAME)
+            );
+            
+            -- Create autopilot_qrtz_fired_triggers
+            CREATE TABLE IF NOT EXISTS autopilot_qrtz_fired_triggers (
+                SCHED_NAME VARCHAR(120) NOT NULL,
+                ENTRY_ID VARCHAR(95) NOT NULL,
+                TRIGGER_NAME VARCHAR(200) NOT NULL,
+                TRIGGER_GROUP VARCHAR(200) NOT NULL,
+                INSTANCE_NAME VARCHAR(200) NOT NULL,
+                FIRED_TIME BIGINT NOT NULL,
+                SCHED_TIME BIGINT NOT NULL,
+                PRIORITY INTEGER NOT NULL,
+                STATE VARCHAR(16) NOT NULL,
+                JOB_NAME VARCHAR(200),
+                JOB_GROUP VARCHAR(200),
+                IS_NONCONCURRENT VARCHAR(1),
+                REQUESTS_RECOVERY VARCHAR(1),
+                PRIMARY KEY (SCHED_NAME, ENTRY_ID)
+            );
+            
+            CREATE INDEX IF NOT EXISTS idx_autopilot_qrtz_ft_inst_job_req_rcvry ON autopilot_qrtz_fired_triggers(SCHED_NAME, INSTANCE_NAME, REQUESTS_RECOVERY);
+            CREATE INDEX IF NOT EXISTS idx_autopilot_qrtz_ft_j_g ON autopilot_qrtz_fired_triggers(SCHED_NAME, JOB_NAME, JOB_GROUP);
+            CREATE INDEX IF NOT EXISTS idx_autopilot_qrtz_ft_jg ON autopilot_qrtz_fired_triggers(SCHED_NAME, JOB_GROUP);
+            CREATE INDEX IF NOT EXISTS idx_autopilot_qrtz_ft_t_g ON autopilot_qrtz_fired_triggers(SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP);
+            CREATE INDEX IF NOT EXISTS idx_autopilot_qrtz_ft_tg ON autopilot_qrtz_fired_triggers(SCHED_NAME, TRIGGER_GROUP);
+            CREATE INDEX IF NOT EXISTS idx_autopilot_qrtz_ft_trig_inst_name ON autopilot_qrtz_fired_triggers(SCHED_NAME, TRIGGER_NAME, INSTANCE_NAME);
+            
+            -- Create autopilot_qrtz_calendars
+            CREATE TABLE IF NOT EXISTS autopilot_qrtz_calendars (
+                SCHED_NAME VARCHAR(120) NOT NULL,
+                CALENDAR_NAME VARCHAR(200) NOT NULL,
+                CALENDAR BYTEA NOT NULL,
+                PRIMARY KEY (SCHED_NAME, CALENDAR_NAME)
+            );
+            
+            -- Create autopilot_qrtz_paused_trigger_grps
+            CREATE TABLE IF NOT EXISTS autopilot_qrtz_paused_trigger_grps (
+                SCHED_NAME VARCHAR(120) NOT NULL,
+                TRIGGER_GROUP VARCHAR(200) NOT NULL,
+                PRIMARY KEY (SCHED_NAME, TRIGGER_GROUP)
+            );
+            
+            -- Create autopilot_qrtz_simple_triggers
+            CREATE TABLE IF NOT EXISTS autopilot_qrtz_simple_triggers (
+                SCHED_NAME VARCHAR(120) NOT NULL,
+                TRIGGER_NAME VARCHAR(200) NOT NULL,
+                TRIGGER_GROUP VARCHAR(200) NOT NULL,
+                REPEAT_COUNT BIGINT NOT NULL,
+                REPEAT_INTERVAL BIGINT NOT NULL,
+                TIMES_TRIGGERED BIGINT NOT NULL,
+                PRIMARY KEY (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP),
+                FOREIGN KEY (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP) 
+                    REFERENCES autopilot_qrtz_triggers(SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP)
+            );
+            
+            -- Create autopilot_qrtz_cron_triggers
+            CREATE TABLE IF NOT EXISTS autopilot_qrtz_cron_triggers (
+                SCHED_NAME VARCHAR(120) NOT NULL,
+                TRIGGER_NAME VARCHAR(200) NOT NULL,
+                TRIGGER_GROUP VARCHAR(200) NOT NULL,
+                CRON_EXPRESSION VARCHAR(120) NOT NULL,
+                TIME_ZONE_ID VARCHAR(80),
+                PRIMARY KEY (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP),
+                FOREIGN KEY (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP) 
+                    REFERENCES autopilot_qrtz_triggers(SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP)
+            );
+            
+            -- Create autopilot_qrtz_simprop_triggers
+            CREATE TABLE IF NOT EXISTS autopilot_qrtz_simprop_triggers (
+                SCHED_NAME VARCHAR(120) NOT NULL,
+                TRIGGER_NAME VARCHAR(200) NOT NULL,
+                TRIGGER_GROUP VARCHAR(200) NOT NULL,
+                STR_PROP_1 VARCHAR(512),
+                STR_PROP_2 VARCHAR(512),
+                STR_PROP_3 VARCHAR(512),
+                INT_PROP_1 INTEGER,
+                INT_PROP_2 INTEGER,
+                LONG_PROP_1 BIGINT,
+                LONG_PROP_2 BIGINT,
+                DEC_PROP_1 NUMERIC(13,4),
+                DEC_PROP_2 NUMERIC(13,4),
+                BOOL_PROP_1 VARCHAR(1),
+                BOOL_PROP_2 VARCHAR(1),
+                PRIMARY KEY (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP),
+                FOREIGN KEY (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP) 
+                    REFERENCES autopilot_qrtz_triggers(SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP)
+            );
+            
+            -- Create autopilot_qrtz_blob_triggers
+            CREATE TABLE IF NOT EXISTS autopilot_qrtz_blob_triggers (
+                SCHED_NAME VARCHAR(120) NOT NULL,
+                TRIGGER_NAME VARCHAR(200) NOT NULL,
+                TRIGGER_GROUP VARCHAR(200) NOT NULL,
+                BLOB_DATA BYTEA,
+                PRIMARY KEY (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP),
+                FOREIGN KEY (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP) 
+                    REFERENCES autopilot_qrtz_triggers(SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP)
+            );
+        </sql>
+        
+        <rollback>
+            <!-- Rollback not needed - these are essential tables -->
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
